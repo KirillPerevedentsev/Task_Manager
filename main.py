@@ -7,8 +7,7 @@ try:
         tasks = json.load(f)
 except (FileNotFoundError, json.JSONDecodeError):
     tasks = []
-
-
+    
 def add_comm():
     new_task = {"id": None, "title": None, "done": False}
     
