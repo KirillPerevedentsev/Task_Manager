@@ -27,9 +27,15 @@ def add_comm():
     with open('data/data.json', 'w', encoding='utf-8') as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
 
-    print('Задача добавлена:', new_task)
+    print('Задача добавлена:', f"ID: {new_task['id']}, задача: {new_task['title']}, статус: {new_task['done']}.")
 
-
+def list_comm():
+    if tasks == []:
+        print('Актуальные задачи отсутствуют')
+    else:
+        for el in tasks:
+            print(f"Номер ID: {el['id']};\n Задача: {el['title']};\n Статус: {el['done']}.")
+            
 while True:
     command = input('> ').strip().lower()
 
@@ -37,12 +43,6 @@ while True:
         break
     elif command == 'add':
         add_comm()
-
-
-
-
-
-        
-
-
+    elif command == 'list':
+        list_comm()
 
