@@ -37,7 +37,6 @@ def delete_comm():
             del_id = int(input('Введите ID: '))
         except ValueError:
             print('ID должен быть числом')
-            del_id = int(input('Введите ID: '))
             return    
         for task in tasks:
             if task['id'] == del_id:
