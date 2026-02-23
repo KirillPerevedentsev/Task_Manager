@@ -27,7 +27,27 @@ def add_comm():
     with open('data/data.json', 'w', encoding='utf-8') as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
 
-    print('Задача добавлена:', f"ID: {new_task['id']}, задача: {new_task['title']}, статус: {new_task['done']}.")
+    print('Задача добавлена:',f"ID: {new_task['id']}, задача: {new_task['title']}, статус: {new_task['done']}.")
+
+def delete_comm():
+    if tasks == []:
+        print('Актуальные задачи отсутствуют')
+    else:
+        try:
+            del_id = int(input('Введите ID: '))
+        except ValueError:
+            print('ID должен быть числом')
+            del_id = int(input('Введите ID: '))
+            return    
+        for task in tasks:
+            if task['id'] == del_id:
+                tasks.remove(task)
+                with open('data/data.json', 'w', encoding='utf-8') as f:
+                    json.dump(tasks, f, ensure_ascii=False, indent=2)
+                print('Задача удалена')
+                break
+        else:
+            print('Задача с таким ID не найдена')
 
 def list_comm():
     if tasks == []:
@@ -45,4 +65,6 @@ while True:
         add_comm()
     elif command == 'list':
         list_comm()
+    elif command == 'delete':
+        delete_comm()
 
