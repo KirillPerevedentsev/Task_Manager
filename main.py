@@ -48,6 +48,25 @@ def delete_comm():
         else:
             print('Задача с таким ID не найдена')
 
+def done_comm():
+    if tasks == []:
+        print('Актуальные задачи отсутствуют')
+    else:
+        try:
+            done_id = int(input('Введите ID задачи: '))
+        except ValueError:
+            print('ID должен быть числом')
+            return    
+        for task in tasks:
+            if task['id'] == done_id:
+                task['done'] = True
+                with open('data/data.json', 'w', encoding='utf-8') as f:
+                    json.dump(tasks, f, ensure_ascii=False, indent=2)
+                print('Задача выполнена!')
+                break
+        else:
+            print('Задача с таким ID не найдена')
+
 def list_comm():
     if tasks == []:
         print('Актуальные задачи отсутствуют')
@@ -66,4 +85,8 @@ while True:
         list_comm()
     elif command == 'delete':
         delete_comm()
+    elif command == 'done':
+        done_comm()
+    else:
+        print('Некорректная команда')
 
