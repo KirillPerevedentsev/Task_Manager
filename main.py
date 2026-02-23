@@ -26,8 +26,10 @@ def add_comm():
 
     with open('data/data.json', 'w', encoding='utf-8') as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
+    
+    status = 'Не выполнено' if new_task['done'] == False else 'Выполнено'
 
-    print('Задача добавлена:',f"ID: {new_task['id']}, задача: {new_task['title']}, статус: {new_task['done']}.")
+    print('Задача добавлена:',f"ID: {new_task['id']}, задача: {new_task['title']}, статус: {status}.")
 
 def delete_comm():
     if tasks == []:
@@ -58,11 +60,14 @@ def done_comm():
             print('ID должен быть числом')
             return    
         for task in tasks:
-            if task['id'] == done_id:
+            if task['id'] == done_id and task['done']:
+                print(f'Задача с ID {done_id} уже была выполнена')
+                break
+            elif task['id'] == done_id:
                 task['done'] = True
                 with open('data/data.json', 'w', encoding='utf-8') as f:
                     json.dump(tasks, f, ensure_ascii=False, indent=2)
-                print('Задача выполнена!')
+                print(f'Задача с ID {done_id} выполнена!')
                 break
         else:
             print('Задача с таким ID не найдена')
@@ -72,12 +77,14 @@ def list_comm():
         print('Актуальные задачи отсутствуют')
     else:
         for el in tasks:
-            print(f"Номер ID: {el['id']};\n Задача: {el['title']};\n Статус: {el['done']}.")
+            status = 'Выполнено' if el['done'] == True else 'Не выполнено'
+            print(f"Номер ID: {el['id']};\n Задача: {el['title']};\n Статус: {status}.")
             
 while True:
     command = input('> ').strip().lower()
 
     if command == 'exit':
+        print("Завершение программы")
         break
     elif command == 'add':
         add_comm()
