@@ -7,6 +7,8 @@ try:
         tasks = json.load(f)
 except (FileNotFoundError, json.JSONDecodeError):
     tasks = []
+    with open('data/data.json', 'w', encoding='utf-8') as f:
+        json.dump(tasks, f, ensure_ascii=False, indent=2)
     
 def add_comm():
     new_task = {"id": None, "title": None, "done": False}
