@@ -1,4 +1,5 @@
 import json
+import uuid
 
 print('Начало работы\nСписок команд:\n add — добавить задачу; \n list — показать задачи; \n done — отметить выполненной; \n delete — удалить задачу; \n exit — выйти.\n Введите команду')
 
@@ -13,10 +14,12 @@ except (FileNotFoundError, json.JSONDecodeError):
 def add_comm():
     new_task = {"id": None, "title": None, "done": False}
     
-    if tasks == []:
-        new_task["id"] = 1
-    else:
-        new_task["id"] = max(task["id"] for task in tasks) + 1
+    new_task["id"] = int(uuid.uuid4())
+
+    # if tasks == []:
+    #     new_task["id"] = 1
+    # else:
+    #     new_task["id"] = max(task["id"] for task in tasks) + 1
     
     new_task["title"] = input('Введите задачу: ').strip()
 
@@ -69,7 +72,7 @@ def done_comm():
                 task['done'] = True
                 with open('data/data.json', 'w', encoding='utf-8') as f:
                     json.dump(tasks, f, ensure_ascii=False, indent=2)
-                print(f'Задача с ID {done_id} выполнена!')
+                print(f'Задача \"{task['title']}\" выполнена!')
                 break
         else:
             print('Задача с таким ID не найдена')
