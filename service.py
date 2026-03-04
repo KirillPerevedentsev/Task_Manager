@@ -1,7 +1,7 @@
 import json
 import uuid
 
-def load_tasks(path: str) -> list:
+def load_tasks(path) -> list:
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
