@@ -18,21 +18,30 @@ def save_tasks(tasks: list, path: str) -> None:
 
 
 def add_comm(tasks: list, path: str) -> None:
-    title = input("Введите задачу: ").strip()
+    title = input("Введите название задачи: ").strip()
     if title == "":
         print("Пустое название нельзя")
         return
-
-    new_task = {
-        "id": uuid.uuid4().hex[:8],  
-        "title": title,
-        "done": False,
-    }
+    
+    discription = input("Введите описание задачи: ").strip()
+    if discription == "":
+        new_task = {
+            "id": uuid.uuid4().hex[:8],  
+            "title": title,
+            "done": False,
+            }
+    else:
+        new_task = {
+            "id": uuid.uuid4().hex[:8],  
+            "title": title,
+            "discription": discription,
+            "done": False,
+            }
 
     tasks.append(new_task)
     save_tasks(tasks, path)
 
-    print(f"Задача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
+    print(f"\nЗадача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
 
 
 def list_comm(tasks: list) -> None:
@@ -43,6 +52,26 @@ def list_comm(tasks: list) -> None:
     for task in tasks:
         status = "Выполнено" if task["done"] else "Не выполнено"
         print(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
+
+def disc_comm(tasks: list) -> None:
+    if not tasks:
+        print("Актуальные задачи отсутствуют")
+        return
+    
+    disc_id = input("Введите ID: ").strip()
+    for task in tasks:
+        try:
+            if task["id"] == disc_id:
+                print(
+                    f' Название задачи: {task["title"]}\n'
+                    f' Описание: {task["discription"]}'
+                    )
+                return
+        except KeyError:
+            print(f'Задача "{task['title']}" не имеет описания')
+            return
+
+    print("Задача с таким ID не найдена")
 
 
 def delete_comm(tasks: list, path: str) -> None:
@@ -56,7 +85,7 @@ def delete_comm(tasks: list, path: str) -> None:
         if task["id"] == del_id:
             tasks.remove(task)
             save_tasks(tasks, path)
-            print("Задача удалена")
+            print(f'Задача "{task["title"]}" удалена')
             return
 
     print("Задача с таким ID не найдена")
@@ -87,6 +116,7 @@ def help_comm():
     print(
     "Список команд:\n"
     " add — добавить задачу;\n"
+    " disc — отобразить описание задачи;\n"
     " list — показать задачи;\n"
     " done — отметить выполненной;\n"
     " delete — удалить задачу;\n"

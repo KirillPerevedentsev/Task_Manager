@@ -4,14 +4,8 @@ DATA_PATH = "data/data.json"
 
 print(
     "\nНачало работы\n"
-    "Список команд:\n"
-    " add — добавить задачу;\n"
-    " list — показать задачи;\n"
-    " done — отметить выполненной;\n"
-    " delete — удалить задачу;\n"
-    " help — список команд;\n"
-    " exit — выйти.\n"
-    "Введите команду"
+    "\nЧтобы отобразить список команд, введите команду \"help\"\n"
+    "\nВведите команду"
 )
 
 tasks = service.load_tasks(DATA_PATH)
@@ -24,6 +18,8 @@ while True:
         break
     elif command == 'add':
         service.add_comm(tasks, DATA_PATH)
+    elif command == 'disc':
+        service.disc_comm(tasks)
     elif command == 'list':
         service.list_comm(tasks)
     elif command == 'delete':
