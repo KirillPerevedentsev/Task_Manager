@@ -19,7 +19,7 @@ while True:
     elif command == 'add':
         service.add_comm(tasks, DATA_PATH)
     elif command == 'disc':
-        service.disc_comm(tasks)
+        service.desc_comm(tasks)
     elif command == 'list':
         service.list_comm(tasks)
     elif command == 'delete':

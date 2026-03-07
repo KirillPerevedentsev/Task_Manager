@@ -23,8 +23,8 @@ def add_comm(tasks: list, path: str) -> None:
         print("Пустое название нельзя")
         return
     
-    discription = input("Введите описание задачи: ").strip()
-    if discription == "":
+    description = input("Введите описание задачи: ").strip()
+    if description == "":
         new_task = {
             "id": uuid.uuid4().hex[:8],  
             "title": title,
@@ -34,7 +34,7 @@ def add_comm(tasks: list, path: str) -> None:
         new_task = {
             "id": uuid.uuid4().hex[:8],  
             "title": title,
-            "discription": discription,
+            "description": description,
             "done": False,
             }
 
@@ -53,22 +53,23 @@ def list_comm(tasks: list) -> None:
         status = "Выполнено" if task["done"] else "Не выполнено"
         print(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
 
-def disc_comm(tasks: list) -> None:
+
+def desc_comm(tasks: list) -> None:
     if not tasks:
         print("Актуальные задачи отсутствуют")
         return
     
-    disc_id = input("Введите ID: ").strip()
+    desc_id = input("Введите ID: ").strip()
     for task in tasks:
         try:
-            if task["id"] == disc_id:
+            if task["id"] == desc_id:
                 print(
                     f' Название задачи: {task["title"]}\n'
-                    f' Описание: {task["discription"]}'
+                    f' Описание: {task["description"]}'
                     )
                 return
         except KeyError:
-            print(f'Задача "{task['title']}" не имеет описания')
+            print(f'Задача "{task["title"]}" не имеет описания')
             return
 
     print("Задача с таким ID не найдена")
