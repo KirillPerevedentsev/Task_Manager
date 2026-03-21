@@ -1,9 +1,15 @@
 import service
+import logging
 
 DATA_PATH = "data/data.json"
 
+logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')
+
+logger = logging.getLogger(__name__)
+
+logger.info('Начало работы')
+
 print(
-    "\nНачало работы\n"
     "\nЧтобы отобразить список команд, введите команду \"help\"\n"
     "\nВведите команду"
 )
@@ -14,11 +20,11 @@ while True:
     command = input('\n>').strip().lower()
 
     if command == 'exit':
-        print("Завершение программы")
+        logger.info("Завершение программы")
         break
     elif command == 'add':
         service.add_comm(tasks, DATA_PATH)
-    elif command == 'disc':
+    elif command == 'desc':
         service.desc_comm(tasks)
     elif command == 'list':
         service.list_comm(tasks)
@@ -29,5 +35,5 @@ while True:
     elif command == 'help':
         service.help_comm()
     else:
-        print('Некорректная команда')
+       logger.error('Некорректная команда')
 

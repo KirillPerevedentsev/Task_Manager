@@ -1,5 +1,10 @@
 import json
 import uuid
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')
+
+logger = logging.getLogger(__name__)
 
 def load_tasks(path) -> list:
     try:
@@ -20,7 +25,7 @@ def save_tasks(tasks: list, path: str) -> None:
 def add_comm(tasks: list, path: str) -> None:
     title = input("Введите название задачи: ").strip()
     if title == "":
-        print("Пустое название нельзя")
+        logger.warning("Пустое название нельзя")
         return
     
     description = input("Введите описание задачи: ").strip()
@@ -41,7 +46,7 @@ def add_comm(tasks: list, path: str) -> None:
     tasks.append(new_task)
     save_tasks(tasks, path)
 
-    print(f"\nЗадача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
+    logger.info(f"\nЗадача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
 
 
 def list_comm(tasks: list) -> None:
@@ -51,7 +56,7 @@ def list_comm(tasks: list) -> None:
 
     for task in tasks:
         status = "Выполнено" if task["done"] else "Не выполнено"
-        print(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
+        logger.info(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
 
 
 def desc_comm(tasks: list) -> None:
@@ -69,10 +74,10 @@ def desc_comm(tasks: list) -> None:
                     )
                 return
         except KeyError:
-            print(f'Задача "{task["title"]}" не имеет описания')
+            logger.error(f'Задача "{task["title"]}" не имеет описания')
             return
 
-    print("Задача с таким ID не найдена")
+    logger.warning("Задача с таким ID не найдена")
 
 
 def delete_comm(tasks: list, path: str) -> None:
@@ -86,10 +91,10 @@ def delete_comm(tasks: list, path: str) -> None:
         if task["id"] == del_id:
             tasks.remove(task)
             save_tasks(tasks, path)
-            print(f'Задача "{task["title"]}" удалена')
+            logger.info(f'Задача "{task["title"]}" удалена')
             return
 
-    print("Задача с таким ID не найдена")
+    logger.warning("Задача с таким ID не найдена")
 
 
 def done_comm(tasks: list, path: str) -> None:
@@ -102,22 +107,22 @@ def done_comm(tasks: list, path: str) -> None:
     for task in tasks:
         if task["id"] == done_id:
             if task["done"]:
-                print(f"Задача с ID {done_id} уже была выполнена")
+                logger.warning(f"Задача с ID {done_id} уже была выполнена")
                 return
 
             task["done"] = True
             save_tasks(tasks, path)
-            print(f'Задача "{task["title"]}" выполнена!')
+            logger.info(f'Задача "{task["title"]}" выполнена!')
             return
 
-    print("Задача с таким ID не найдена")
+    logger.warning("Задача с таким ID не найдена")
 
 
 def help_comm():
     print(
     "Список команд:\n"
     " add — добавить задачу;\n"
-    " disc — отобразить описание задачи;\n"
+    " desc — отобразить описание задачи;\n"
     " list — показать задачи;\n"
     " done — отметить выполненной;\n"
     " delete — удалить задачу;\n"
