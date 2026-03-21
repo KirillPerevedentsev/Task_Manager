@@ -2,15 +2,20 @@ import json
 import uuid
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')
-
 logger = logging.getLogger(__name__)
 
 def load_tasks(path) -> list:
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError:
+        logger.warning("Файл с задачами не найден, создаю новый")
+        tasks = []
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(tasks, f, ensure_ascii=False, indent=2)
+        return tasks
+    except json.JSONDecodeError:
+        logger.error("Файл с задачами поврежден, создаю пустой список")
         tasks = []
         with open(path, "w", encoding="utf-8") as f:
             json.dump(tasks, f, ensure_ascii=False, indent=2)
@@ -46,7 +51,7 @@ def add_comm(tasks: list, path: str) -> None:
     tasks.append(new_task)
     save_tasks(tasks, path)
 
-    logger.info(f"\nЗадача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
+    print(f"\nЗадача добавлена: ID: {new_task['id']}, задача: {new_task['title']}.")
 
 
 def list_comm(tasks: list) -> None:
@@ -56,7 +61,7 @@ def list_comm(tasks: list) -> None:
 
     for task in tasks:
         status = "Выполнено" if task["done"] else "Не выполнено"
-        logger.info(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
+        print(f"ID: {task['id']} | Задача: {task['title']} | Статус: {status}")
 
 
 def desc_comm(tasks: list) -> None:
@@ -91,7 +96,7 @@ def delete_comm(tasks: list, path: str) -> None:
         if task["id"] == del_id:
             tasks.remove(task)
             save_tasks(tasks, path)
-            logger.info(f'Задача "{task["title"]}" удалена')
+            print(f'Задача "{task["title"]}" удалена')
             return
 
     logger.warning("Задача с таким ID не найдена")
@@ -112,7 +117,7 @@ def done_comm(tasks: list, path: str) -> None:
 
             task["done"] = True
             save_tasks(tasks, path)
-            logger.info(f'Задача "{task["title"]}" выполнена!')
+            print(f'Задача "{task["title"]}" выполнена!')
             return
 
     logger.warning("Задача с таким ID не найдена")
